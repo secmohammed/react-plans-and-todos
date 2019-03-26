@@ -2,6 +2,7 @@ import {
 	LOAD_PROJECTS,
 	CREATE_PROJECT,
 	GET_PROJECT,
+	UPDATE_PROJECT,
 	REMOVE_PROJECT
 } from "../actions/types";
 const initialState = {
@@ -11,13 +12,26 @@ const initialState = {
 
 export default function(state = initialState, action) {
 	switch (action.type) {
+		case UPDATE_PROJECT:
+			let projects = state.projects;
+			projects[action.payload.id] = action.payload;
+
+			return {
+				...state,
+				projects
+			};
 		case GET_PROJECT:
 			return {
 				...state,
 				project: action.payload
 			};
 		case REMOVE_PROJECT:
-			return {};
+			return {
+				...state,
+				projects: state.projects.filter(
+					project => project.id !== action.payload
+				)
+			};
 		case LOAD_PROJECTS:
 			return {
 				...state,

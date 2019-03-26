@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { Col, Input, Icon, Button } from "react-materialize";
-export default class SignUp extends Component {
+import { clearNotification } from "../../store/actions/notificationActions";
+import { register } from "../../store/actions/authActions.js";
+import { connect } from 'react-redux';
+class SignUp extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -10,6 +13,14 @@ export default class SignUp extends Component {
 			last_name: ""
 		};
 	}
+	componentDidUpdate() {
+		if (this.props.message) {
+			this.props.history.push('/login')
+			this.props.clearNotification();
+
+		}
+	}
+
 	handleChange = e => {
 		this.setState({
 			[e.target.name]: e.target.value
@@ -17,8 +28,7 @@ export default class SignUp extends Component {
 	};
 	handleSubmit = e => {
 		e.preventDefault();
-
-		console.log(this.state);
+		this.props.register(this.state);
 	};
 	render() {
 		return (
@@ -62,3 +72,16 @@ export default class SignUp extends Component {
 		);
 	}
 }
+const mapStateToProps = state => {
+	return {
+		message: state.notification.message
+	};
+};
+export default connect(
+	mapStateToProps,
+	{
+		register,
+		clearNotification
+	}
+)(SignUp);
+

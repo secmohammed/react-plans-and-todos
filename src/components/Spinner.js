@@ -4,7 +4,7 @@ import { Col, Row } from "react-materialize";
 export default class Spinner extends Component {
 	render() {
 		return (
-			<Row center>
+			<Row>
 				<Col s={12}>
 					<Loader type="Circles" height={80} width={80} />
 				</Col>

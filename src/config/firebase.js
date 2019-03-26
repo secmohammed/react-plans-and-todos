@@ -1,5 +1,5 @@
-import * as firebase from "firebase";
-
+import firebase from "firebase/app";
+import "firebase/auth";
 const config = {
 	apiKey: "AIzaSyBBAw343eyf2rQ9jjFsdx26-AudroC5mM4",
 	authDomain: "react-plans-app.firebaseapp.com",
@@ -11,6 +11,6 @@ const config = {
 
 firebase.initializeApp(config);
 require("firebase/firestore");
-
+export const auth = firebase.auth();
 export const db = firebase.firestore();
 export const projects = db.collection("projects");

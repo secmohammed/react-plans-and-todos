@@ -11,8 +11,9 @@ class Dashboard extends Component {
 	}
 	render() {
 		const { projects } = this.props;
-		console.log(this.props.isLoading);
 		if (this.props.isLoading) {
+			return <Spinner />;
+		} else {
 			return (
 				<div className="dashboard container">
 					<div className="row">
@@ -25,8 +26,6 @@ class Dashboard extends Component {
 					</div>
 				</div>
 			);
-		} else {
-			return <Spinner />;
 		}
 	}
 }

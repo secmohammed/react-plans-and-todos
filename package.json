@@ -13,6 +13,8 @@
 		"react-redux-firebase": "^2.2.6",
 		"react-router-dom": "^4.4.0",
 		"react-scripts": "2.1.8",
+		"react-toastify": "^4.5.2",
+		"react-toasts": "^3.0.1",
 		"redux": "^4.0.1",
 		"redux-firestore": "^0.7.2",
 		"redux-thunk": "^2.3.0"

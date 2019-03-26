@@ -4,15 +4,31 @@ import {
 	CREATE_PROJECT,
 	GET_PROJECT,
 	REMOVE_PROJECT,
+	UPDATE_PROJECT,
 	LOADING_STARTED,
-	LOADING_FINISHED
+	LOADING_FINISHED,
+	SET_NOTIFICATION_MESSAGE
 } from "./types";
 
 export const updateProect = (id, payload) => dispatch => {
+	dispatch({
+		type: LOADING_STARTED
+	});
 	projects
 		.doc(id)
 		.update(payload)
-		.then(res => console.log(res));
+		.then(() => {
+			dispatch({
+				type: UPDATE_PROJECT,
+				payload: {
+					...payload,
+					id
+				}
+			});
+			dispatch({
+				type: LOADING_FINISHED
+			});
+		});
 };
 
 export const getProject = id => async dispatch => {
@@ -20,36 +36,62 @@ export const getProject = id => async dispatch => {
 		type: LOADING_STARTED
 	});
 	let document = await projects.doc(id).get();
-	dispatch({
-		type: GET_PROJECT,
-		payload: {
-			id,
-			...document.data()
-		}
-	});
+	if (document.exists) {
+		dispatch({
+			type: GET_PROJECT,
+			payload: {
+				id,
+				...document.data()
+			}
+		});
+	} else {
+		dispatch({
+			type: SET_NOTIFICATION_MESSAGE,
+			payload: "Could not find this document."
+		});
+	}
 	dispatch({
 		type: LOADING_FINISHED
 	});
 };
 export const removeProject = id => dispatch => {
+	dispatch({
+		type: LOADING_STARTED
+	});
+
 	projects
 		.doc(id)
 		.delete()
-		.then(() => console.log("deleted"));
+		.then(() => {
+			dispatch({
+				type: REMOVE_PROJECT,
+				payload: id
+			});
+			dispatch({
+				type: LOADING_FINISHED
+			});
+		});
 };
 export const createProject = payload => dispatch => {
+	dispatch({
+		type: LOADING_STARTED
+	});
+
 	projects
 		.add(payload)
 		.then(project =>
-			project.get().then(documentSnapshot =>
+			project.get().then(documentSnapshot => {
 				dispatch({
 					type: CREATE_PROJECT,
 					payload: {
 						id: project.id,
 						...documentSnapshot.data()
 					}
-				})
-			)
+				});
+				dispatch({
+					type: LOADING_FINISHED
+				});
+			})
 		)
 		.catch(err => console.log(err));
 };
@@ -64,8 +106,8 @@ export const getProjects = () => dispatch => {
 			type: LOAD_PROJECTS,
 			payload: querySnapshot.docs
 		});
-	});
-	dispatch({
-		type: LOADING_FINISHED
+		dispatch({
+			type: LOADING_FINISHED
+		});
 	});
 };

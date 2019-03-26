@@ -1,12 +1,21 @@
 import React, { Component } from "react";
 import { Col, Input, Icon, Button } from "react-materialize";
-export default class SignIn extends Component {
+import { connect } from "react-redux";
+import { login } from "../../store/actions/authActions.js";
+import { clearNotification } from "../../store/actions/notificationActions";
+// show notification, redirect if user is authenticated.
+class SignIn extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			email: "",
 			password: ""
 		};
+	}
+	componentDidUpdate() {
+		if (this.props.isAuthenticated) {
+			this.props.history.push('/')
+		}
 	}
 	handleChange = e => {
 		this.setState({
@@ -15,8 +24,7 @@ export default class SignIn extends Component {
 	};
 	handleSubmit = e => {
 		e.preventDefault();
-
-		console.log(this.state);
+		this.props.login(this.state)
 	};
 	render() {
 		return (
@@ -47,3 +55,16 @@ export default class SignIn extends Component {
 		);
 	}
 }
+const mapStateToProps = state => {
+	return {
+		isAuthenticated: state.auth.isAuthenticated,
+		message: state.notification.message
+	};
+};
+export default connect(
+	mapStateToProps,
+	{
+		login,
+		clearNotification
+	}
+)(SignIn);
