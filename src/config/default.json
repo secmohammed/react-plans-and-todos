@@ -1,0 +1,10 @@
+{
+    "firebase": {
+        "apiKey": "AIzaSyBBAw343eyf2rQ9jjFsdx26-AudroC5mM4",
+        "authDomain": "react-plans-app.firebaseapp.com",
+        "databaseURL": "https://react-plans-app.firebaseio.com",
+        "projectId": "react-plans-app",
+        "storageBucket": "react-plans-app.appspot.com",
+        "messagingSenderId": "816541555615"
+    }
+}

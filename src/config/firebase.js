@@ -1,15 +1,9 @@
 import firebase from "firebase/app";
 import "firebase/auth";
-const config = {
-	apiKey: "AIzaSyBBAw343eyf2rQ9jjFsdx26-AudroC5mM4",
-	authDomain: "react-plans-app.firebaseapp.com",
-	databaseURL: "https://react-plans-app.firebaseio.com",
-	projectId: "react-plans-app",
-	storageBucket: "react-plans-app.appspot.com",
-	messagingSenderId: "816541555615"
-};
+import config from 'react-global-configuration';
+require('./config.js')
+firebase.initializeApp(config.get('firebase'));
 
-firebase.initializeApp(config);
 require("firebase/firestore");
 export const auth = firebase.auth();
 export const db = firebase.firestore();
