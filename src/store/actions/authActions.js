@@ -14,12 +14,16 @@ export const logout = () => dispatch => {
         })
         dispatch({
             type: SET_NOTIFICATION_MESSAGE,
-            payload: 'Logged out successfully.'
+            payload: {
+                message: 'Logged out successfully.'
+            }
         })
     }).catch(error => {
            dispatch({
                 type: SET_NOTIFICATION_MESSAGE,
-                payload: error.message
+                payload: {
+                    message: error.message
+                }
            })
            dispatch({
                 type: LOADING_FINISHED
@@ -55,7 +59,9 @@ export const login = payload => dispatch => {
         .catch(error => {
            dispatch({
                 type: SET_NOTIFICATION_MESSAGE,
-                payload: error.message
+                payload: {
+                    message: error.message
+                }
            })
            dispatch({
                 type: LOADING_FINISHED
@@ -73,7 +79,9 @@ export const register = payload => dispatch => {
         .then(() => {
             dispatch({
                 type: SET_NOTIFICATION_MESSAGE,
-                payload: 'Thanks for registering.'
+                payload: {
+                    message: 'Thanks for registering.'
+                }
             })
             dispatch({
                 LOADING_FINISHED

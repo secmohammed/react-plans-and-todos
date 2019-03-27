@@ -47,7 +47,9 @@ export const getProject = id => async dispatch => {
 	} else {
 		dispatch({
 			type: SET_NOTIFICATION_MESSAGE,
-			payload: "Could not find this document."
+			payload: {
+				message: "Could not find this document."
+			}
 		});
 	}
 	dispatch({

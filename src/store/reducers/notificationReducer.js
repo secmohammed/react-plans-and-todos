@@ -1,5 +1,4 @@
 import { SET_NOTIFICATION_MESSAGE, UNSET_NOTIFICATION_MESSAGE } from "../actions/types";
-// change this reducer to be a notification reducer.
 const initialState = {
 	message: null,
 	type: 'info'
@@ -10,12 +9,14 @@ export default function(state = initialState, action) {
 		case SET_NOTIFICATION_MESSAGE:
 			return {
 				...state,
-				message: action.payload
+				message: action.payload.message,
+				type: action.payload.type || state.type
 			};
 		case UNSET_NOTIFICATION_MESSAGE:
 			return {
 				...state,
-				message: null
+				message: null,
+				type: 'info'
 			};
 		default:
 			return state;
