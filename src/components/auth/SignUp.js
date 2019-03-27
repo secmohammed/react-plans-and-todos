@@ -9,8 +9,9 @@ class SignUp extends Component {
 		this.state = {
 			email: "",
 			password: "",
-			first_name: "",
-			last_name: ""
+			firstName: "",
+			lastName: "",
+			phoneNumber: ""
 		};
 	}
 	componentDidUpdate() {
@@ -28,7 +29,16 @@ class SignUp extends Component {
 	};
 	handleSubmit = e => {
 		e.preventDefault();
-		this.props.register(this.state);
+		this.props.register({
+			credentials: {
+				email: this.state.email,
+				password: this.state.password
+			},
+			meta: {
+				displayName: this.state.firstName + this.state.lastName,
+				phoneNumber: this.state.phoneNumber
+			}
+		});
 	};
 	render() {
 		return (
@@ -43,14 +53,14 @@ class SignUp extends Component {
 							<Icon>account_circle</Icon>
 						</Input>
 						<Input
-							name="first_name"
+							name="firstName"
 							label="first name"
 							validate
 							onChange={this.handleChange}>
 							<Icon>account_circle</Icon>
 						</Input>
 						<Input
-							name="last_name"
+							name="lastName"
 							label="last name"
 							validate
 							onChange={this.handleChange}>
@@ -65,7 +75,7 @@ class SignUp extends Component {
 							onChange={this.handleChange}>
 							<Icon>lock</Icon>
 						</Input>
-						<Button waves="light">Login</Button>
+						<Button waves="light">Register</Button>
 					</form>
 				</Col>
 			</div>

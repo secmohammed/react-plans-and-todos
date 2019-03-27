@@ -12,12 +12,6 @@ export const logout = () => dispatch => {
         dispatch({
             type: UNSET_LOGGED_IN_USER
         })
-        dispatch({
-            type: SET_NOTIFICATION_MESSAGE,
-            payload: {
-                message: 'Logged out successfully.'
-            }
-        })
     }).catch(error => {
            dispatch({
                 type: SET_NOTIFICATION_MESSAGE,
@@ -25,11 +19,14 @@ export const logout = () => dispatch => {
                     message: error.message
                 }
            })
-           dispatch({
-                type: LOADING_FINISHED
-            });
-
        });
+    dispatch({
+        type: SET_NOTIFICATION_MESSAGE,
+        payload: {
+            message: 'Logged out successfully.'
+        }
+    })
+
 }
 export const login = payload => dispatch => {
     dispatch({
@@ -38,9 +35,6 @@ export const login = payload => dispatch => {
     auth
         .signInWithEmailAndPassword(payload.email, payload.password)
         .then(({ user }) => {
-            dispatch({
-                type: LOADING_FINISHED
-            });
             dispatch({ 
                 type: SET_LOGGED_IN_USER,
                 payload: {
@@ -63,28 +57,38 @@ export const login = payload => dispatch => {
                     message: error.message
                 }
            })
-           dispatch({
-                type: LOADING_FINISHED
-            });
-
        });
 
+    dispatch({
+        type: LOADING_FINISHED
+    });
 }
 export const register = payload => dispatch => {
     dispatch({
         type: LOADING_STARTED
     });
     auth
-        .createUserWithEmailAndPassword(...payload)
+        .createUserWithEmailAndPassword(...payload.credentials)
         .then(() => {
+            // user update profile.
+            // ...payload.meta
             dispatch({
                 type: SET_NOTIFICATION_MESSAGE,
                 payload: {
                     message: 'Thanks for registering.'
                 }
             })
+        }).catch(({message}) => 
             dispatch({
-                LOADING_FINISHED
-            });
-        }).catch(err => console.log(err));
+                type: SET_NOTIFICATION_MESSAGE,
+                payload: {
+                    message
+                }
+            })
+        );
+
+    dispatch({
+        type: LOADING_FINISHED
+    });
+
 }

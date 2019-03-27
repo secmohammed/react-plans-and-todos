@@ -21,6 +21,7 @@ class ProjectDetails extends Component {
 		this.props.history.push("/");
 	}
 	render() {
+		// remove the spinner from here.
 		if (this.props.project && !this.props.isLoading) {
 			return (
 				<div className="container section project-details">

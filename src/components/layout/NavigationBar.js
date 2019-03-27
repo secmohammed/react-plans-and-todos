@@ -4,12 +4,17 @@ import SignedInLinks from "./SignedInLinks";
 import { connect } from "react-redux";
 import SignedOutLinks from "./SignedOutLinks";
 class NavigationBar extends Component {
+	checkForAuthenticationAndRender = () => {
+		if(this.props.isAuthenticated)
+			return <SignedInLinks />
+		else 
+			return <SignedOutLinks />
+	}
 	render() {
-		const renderingComponent = this.props.isAuthenticated ? <SignedInLinks /> : <SignedOutLinks />; 
 		return (
 			<Navbar className="teal lighten-1">
 				<div className="container">
-					{renderingComponent}
+					{this.checkForAuthenticationAndRender()}
 					<NavItem href="/">Plans</NavItem>
 				</div>
 			</Navbar>
