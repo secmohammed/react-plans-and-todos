@@ -8,6 +8,7 @@ const initialState = {
 export default function(state = initialState, action) {
     switch (action.type) {
         case SET_LOGGED_IN_USER:
+            localStorage.setItem("token", action.payload.token)
             return {
                 ...state,
                 isAuthenticated: true,
@@ -15,6 +16,7 @@ export default function(state = initialState, action) {
                 token: action.payload.token
             }
         case UNSET_LOGGED_IN_USER: 
+            localStorage.removeItem("token")
             return {
                 ...state,
                 isAuthenticated: false,
