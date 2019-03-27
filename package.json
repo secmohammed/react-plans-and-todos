@@ -3,7 +3,6 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
-		"config": "^3.0.1",
 		"firebase": "^5.9.0",
 		"lodash": "^4.17.11",
 		"react": "^16.8.4",
@@ -12,13 +11,10 @@
 		"react-loader-spinner": "^2.3.0",
 		"react-materialize": "^2.6.0",
 		"react-redux": "^6.0.1",
-		"react-redux-firebase": "^2.2.6",
 		"react-router-dom": "^4.4.0",
 		"react-scripts": "2.1.8",
-		"react-toastify": "^4.5.2",
 		"react-toasts": "^3.0.1",
 		"redux": "^4.0.1",
-		"redux-firestore": "^0.7.2",
 		"redux-thunk": "^2.3.0"
 	},
 	"scripts": {
