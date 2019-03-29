@@ -44,17 +44,23 @@ export const login = payload => dispatch => {
                         activated: user.emailVerified,
                         phone_number: user.phoneNumber,
                         profile_picture: user.photoURL
-                    },
-                    token: user.ra
+                    }
                 }
             })
-
+            dispatch({
+                type: SET_NOTIFICATION_MESSAGE,
+                payload: {
+                    message: 'Logged in successfully',
+                    type: 'success'
+                }
+            })
         })
         .catch(error => {
            dispatch({
                 type: SET_NOTIFICATION_MESSAGE,
                 payload: {
-                    message: error.message
+                    message: error.message,
+                    type: 'error'
                 }
            })
        });
@@ -63,32 +69,95 @@ export const login = payload => dispatch => {
         type: LOADING_FINISHED
     });
 }
+export const resetPassword = payload => dispatch => {
+    dispatch({
+        type: LOADING_STARTED
+    });
+    auth.confirmPasswordReset(payload.code, payload.password).then(() => {
+        dispatch({
+            type: LOADING_FINISHED
+        });
+        dispatch({
+            type: SET_NOTIFICATION_MESSAGE,
+            payload: {
+                message: ' Password has been changed successfully',
+                type: 'success'
+            }
+        });
+    }).catch(err => {
+        dispatch({
+            type: SET_NOTIFICATION_MESSAGE,
+            payload: {
+                message: err.message,
+                type: 'error'
+            }
+        })
+        dispatch({
+            type: LOADING_FINISHED
+        });
+
+    })
+}
+export const sendPasswordResetEmail = email => dispatch => {
+    dispatch({
+        type: LOADING_STARTED
+    });
+    auth.sendPasswordResetEmail(email).then(function() {
+        dispatch({
+            type: LOADING_FINISHED
+        })
+        dispatch({
+            type: SET_NOTIFICATION_MESSAGE,
+            payload: {
+                message: 'Please check your email.',
+                type: 'success'
+            }
+        })
+    }).catch(function(error) {
+        dispatch({
+            type: LOADING_FINISHED
+        })
+        dispatch({
+            type: SET_NOTIFICATION_MESSAGE,
+            payload: {
+                message: error.message,
+                type: 'error'
+            }
+        })
+
+    });
+}
 export const register = payload => dispatch => {
     dispatch({
         type: LOADING_STARTED
     });
     auth
-        .createUserWithEmailAndPassword(...payload.credentials)
-        .then(() => {
-            // user update profile.
-            // ...payload.meta
+        .createUserWithEmailAndPassword(payload.credentials.email, payload.credentials.password)
+        .then(({user}) => {
+            user.updateProfile({
+                ...payload.meta
+            })
             dispatch({
                 type: SET_NOTIFICATION_MESSAGE,
                 payload: {
-                    message: 'Thanks for registering.'
+                    message: 'Thanks for registering.',
+                    type: 'sucess'
                 }
             })
-        }).catch(({message}) => 
+            dispatch({
+                type: LOADING_FINISHED
+            });
+        }).catch(({message}) => {
             dispatch({
                 type: SET_NOTIFICATION_MESSAGE,
                 payload: {
-                    message
+                    message,
+                    type: 'error'
                 }
             })
-        );
+            dispatch({
+                type: LOADING_FINISHED
+            });
 
-    dispatch({
-        type: LOADING_FINISHED
-    });
-
+        });
 }

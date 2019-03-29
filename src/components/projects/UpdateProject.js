@@ -2,9 +2,19 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getProject, updateProect } from "../../store/actions/projectActions";
 import { Col, Input, Icon, Button } from "react-materialize";
+import { setNotification } from '../../store/actions/notificationActions.js'
 class UpdateProject extends Component {
 	async componentDidMount() {
 		await this.props.getProject(this.props.match.params.id);
+	}
+	componentWillMount() {
+		if(!this.props.isAuthenticated) {
+			this.props.history.push('/auth/login')
+			this.props.setNotification({
+				message: 'You have to login first',
+				type: 'warning'
+			})
+		}
 	}
 	constructor(props) {
 		super(props);
@@ -49,6 +59,7 @@ class UpdateProject extends Component {
 const mapStateToProps = state => {
 	return {
 		project: state.project,
+		isAuthenticated: state.auth.isAuthenticated
 	};
 };
 
@@ -56,6 +67,7 @@ export default connect(
 	mapStateToProps,
 	{
 		getProject,
-		updateProect
+		updateProect,
+		setNotification
 	}
 )(UpdateProject);

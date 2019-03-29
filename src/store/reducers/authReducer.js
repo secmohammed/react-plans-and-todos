@@ -1,6 +1,5 @@
 import { SET_LOGGED_IN_USER, UNSET_LOGGED_IN_USER } from '../actions/types.js'
 const initialState = {
-	token: localStorage.getItem("token"),
 	isAuthenticated: null,
 	user: null,
 };
@@ -8,15 +7,12 @@ const initialState = {
 export default function(state = initialState, action) {
     switch (action.type) {
         case SET_LOGGED_IN_USER:
-            localStorage.setItem("token", action.payload.token)
             return {
                 ...state,
                 isAuthenticated: true,
                 user: action.payload.user,
-                token: action.payload.token
             }
         case UNSET_LOGGED_IN_USER: 
-            localStorage.removeItem("token")
             return {
                 ...state,
                 isAuthenticated: false,

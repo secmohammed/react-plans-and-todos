@@ -3,12 +3,15 @@ import Notifications from "./Notifications";
 import ProjectList from "../projects/ProjectList";
 import { connect } from "react-redux";
 import { getProjects } from "../../store/actions/projectActions";
-
+import Spinner from '../Spinner'
 class Dashboard extends Component {
 	componentDidMount() {
-		this.props.getProjects();
+	 	this.props.getProjects();
 	}
 	render() {
+		if (this.props.loading) {
+			return <Spinner />
+		}
 		const { projects } = this.props;
 		return (
 			<div className="dashboard container">
@@ -27,7 +30,7 @@ class Dashboard extends Component {
 const mapStateToProps = state => {
 	return {
 		projects: state.project.projects,
-		isLoading: state.loading.loading
+		loading: state.loading.loading
 	};
 };
 export default connect(

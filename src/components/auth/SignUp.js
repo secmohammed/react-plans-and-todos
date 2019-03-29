@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Col, Input, Icon, Button } from "react-materialize";
-import { clearNotification } from "../../store/actions/notificationActions";
+import { setNotification } from "../../store/actions/notificationActions";
 import { register } from "../../store/actions/authActions.js";
 import { connect } from 'react-redux';
 class SignUp extends Component {
@@ -14,14 +14,17 @@ class SignUp extends Component {
 			phoneNumber: ""
 		};
 	}
-	componentDidUpdate() {
-		if (this.props.message) {
-			this.props.history.push('/login')
-			this.props.clearNotification();
+	componentWillMount() {
+	  if(this.props.isAuthenticated) {
+	  	this.props.history.push('/');
+        this.props.setNotification({
+            message: 'You are already logged in',
+            type: 'warning'
+        })
 
-		}
+	  }
+
 	}
-
 	handleChange = e => {
 		this.setState({
 			[e.target.name]: e.target.value
@@ -59,9 +62,17 @@ class SignUp extends Component {
 							onChange={this.handleChange}>
 							<Icon>account_circle</Icon>
 						</Input>
+						
 						<Input
 							name="lastName"
 							label="last name"
+							validate
+							onChange={this.handleChange}>
+							<Icon>account_circle</Icon>
+						</Input>
+						<Input
+							name="phoneNumber"
+							label="phone number"
 							validate
 							onChange={this.handleChange}>
 							<Icon>account_circle</Icon>
@@ -84,14 +95,15 @@ class SignUp extends Component {
 }
 const mapStateToProps = state => {
 	return {
-		message: state.notification.message
+		message: state.notification.message,
+		isAuthenticated: state.auth.isAuthenticated
 	};
 };
 export default connect(
 	mapStateToProps,
 	{
 		register,
-		clearNotification
+		setNotification
 	}
 )(SignUp);
 

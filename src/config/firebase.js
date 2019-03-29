@@ -6,5 +6,6 @@ firebase.initializeApp(config.get('firebase'));
 
 require("firebase/firestore");
 export const auth = firebase.auth();
+export const persistency = firebase.auth.Auth.Persistence.SESSION
 export const db = firebase.firestore();
 export const projects = db.collection("projects");

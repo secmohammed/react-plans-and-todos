@@ -108,8 +108,10 @@ export const getProjects = () => dispatch => {
 			type: LOAD_PROJECTS,
 			payload: querySnapshot.docs
 		});
-		dispatch({
-			type: LOADING_FINISHED
-		});
+			dispatch({
+				type: LOADING_FINISHED
+			});
+
 	});
+
 };

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Col, Input, Icon, Button } from "react-materialize";
 import { connect } from "react-redux";
 import { createProject } from "../../store/actions/projectActions";
+import { setNotification } from '../../store/actions/notificationActions'
 class CreateProject extends Component {
 	constructor(props) {
 		super(props);
@@ -19,6 +20,16 @@ class CreateProject extends Component {
 		e.preventDefault();
 		this.props.createProject(this.state);
 	};
+	componentWillMount() {
+	  if(!this.props.isAuthenticated) {
+	  	this.props.history.push('/auth/login');
+        this.props.setNotification({
+            message: 'You have to login first',
+            type: 'warning'
+        })
+
+	  }
+	}
 	render() {
 		return (
 			<div className="container">
@@ -42,9 +53,15 @@ class CreateProject extends Component {
 		);
 	}
 }
+const mapStateToProps = state => {
+	return {
+		isAuthenticated: state.auth.isAuthenticated,
+	}
+}
 export default connect(
-	null,
+	mapStateToProps,
 	{
-		createProject
+		createProject,
+		setNotification
 	}
 )(CreateProject);

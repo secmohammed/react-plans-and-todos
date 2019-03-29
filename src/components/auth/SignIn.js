@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { Col, Input, Icon, Button } from "react-materialize";
 import { connect } from "react-redux";
 import { login } from "../../store/actions/authActions.js";
-import { clearNotification } from "../../store/actions/notificationActions";
-// show notification, redirect if user is authenticated.
+import { setNotification } from '../../store/actions/notificationActions'
 class SignIn extends Component {
 	constructor(props) {
 		super(props);
@@ -11,6 +10,14 @@ class SignIn extends Component {
 			email: "",
 			password: ""
 		};
+	}
+	componentWillMount() {
+		if (this.props.isAuthenticated) {
+			this.props.setNotification({
+				message: 'You are already logged in',
+				type: 'warning'
+			})
+		}
 	}
 	componentDidUpdate() {
 		if (this.props.isAuthenticated) {
@@ -65,6 +72,6 @@ export default connect(
 	mapStateToProps,
 	{
 		login,
-		clearNotification
+		setNotification
 	}
 )(SignIn);
